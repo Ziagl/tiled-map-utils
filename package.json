@@ -1,6 +1,6 @@
 {
   "name": "@ziagl/tiled-map-utils",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Library of utility functions used for hexagon tiled map projects.",
   "author": "Werner Ziegelwanger (ziagl)",
   "license": "GNU LESSER GENERAL PUBLIC LICENSE",

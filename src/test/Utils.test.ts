@@ -13,34 +13,29 @@ test('shuffle', () => {
     expect(shuffledArray).toContain(item);
   });
 });
-test('neighbors', () => {     
+test('neighbors', () => {
   const grid = new Grid(BaseTile, rectangle({ width: 4, height: 4 }));
   // a hex field has normally 6 neighbors
-  let neighbors = Utils.neighbors(grid, {q:1, r:1, s:-2});
+  let neighbors = Utils.neighbors(grid, { q: 1, r: 1, s: -2 });
   expect(neighbors.length).toBe(6);
   // except on the corner
-  neighbors = Utils.neighbors(grid,  {q:0, r:0, s:0});
+  neighbors = Utils.neighbors(grid, { q: 0, r: 0, s: 0 });
   expect(neighbors.length).toBe(2);
   // or borders
-  neighbors = Utils.neighbors(grid, {q:1, r:0, s:-1});
+  neighbors = Utils.neighbors(grid, { q: 1, r: 0, s: -1 });
   expect(neighbors.length).toBe(4);
 });
 test('walkableNeighbors', () => {
-  let exampleMap:number [] = [
-      2, 1, 1, 2,
-      1, 0, 0, 1,
-      2, 0, 0, 1,
-      1, 1, 1, 1,
-  ];
+  let exampleMap: number[] = [2, 1, 1, 2, 1, 0, 0, 1, 2, 0, 0, 1, 1, 1, 1, 1];
   const map = Utils.convertTo2DArray(exampleMap, 4, 4);
   const grid = new Grid(BaseTile, rectangle({ width: 4, height: 4 }));
   // test a tile in the middle
-  let neighbors = Utils.neighbors(grid, {q:1, r:1, s:-2});
+  let neighbors = Utils.neighbors(grid, { q: 1, r: 1, s: -2 });
   expect(neighbors.length).toBe(6);
   let walkableNeighbors = Utils.walkableNeighbors(neighbors, map);
   expect(walkableNeighbors.length).toBe(3);
   // check border
-  neighbors = Utils.neighbors(grid, {q:1, r:0, s:-1});
+  neighbors = Utils.neighbors(grid, { q: 1, r: 0, s: -1 });
   expect(neighbors.length).toBe(4);
   walkableNeighbors = Utils.walkableNeighbors(neighbors, map);
   expect(walkableNeighbors.length).toBe(3);
@@ -55,6 +50,8 @@ test('getUnitOnPosition', () => {
   expect(value).toBe(2);
   value = Utils.getUnitIdOnPosition({ q: 1, r: 0, s: 0 }, exampleLayer, hexDefinition);
   expect(value).toBe(0);
+  value = Utils.getUnitIdOnPosition({ q: 0, r: 1, s: 0 }, [], hexDefinition);
+  expect(value).toBe(0);
 });
 test('setUnitOnPosition', () => {
   const exampleLayer = [
@@ -65,4 +62,12 @@ test('setUnitOnPosition', () => {
   const newValue = 3;
   Utils.setUnitIdOnPosition({ q: 0, r: 0, s: 0 }, exampleLayer, hexDefinition, newValue);
   expect(exampleLayer[0]?.[0]).toBe(newValue);
+});
+test('coordinateToKey', () => {
+  const coordinates = { q: 1, r: 2, s: -3 };
+  const key = Utils.coordinateToKey(coordinates);
+  expect(key).toBe('1,2');
+  const coordinatesNegative = { q: -1, r: -2, s: 3 };
+  const key2 = Utils.coordinateToKey(coordinatesNegative);
+  expect(key2).toBe('-1,-2');
 });
